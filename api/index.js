@@ -98,7 +98,7 @@ app.get("/find", async (req, res) => {
     const uniqueKeywords = [...new Set(keywords)];
 
     // emojis para cada palabra clave
-    const emojis = loadEmojis("../data/OpenMoji.json");
+    const emojis = loadEmojis("public/OpenMoji.json");
     const emojisResult = uniqueKeywords.map((keyword) => {
       const closestEmoji = findEmojiByKeyword(keyword, emojis);
       return closestEmoji ? closestEmoji["_openMoji_hexcode"] : null;
