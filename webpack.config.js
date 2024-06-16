@@ -2,7 +2,7 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  entry: "./src/index.js", // Punto de entrada de tu aplicación
+  entry: "./api/index.js", // Punto de entrada de tu aplicación
   target: "node",
   output: {
     path: path.resolve(__dirname, "dist"),
