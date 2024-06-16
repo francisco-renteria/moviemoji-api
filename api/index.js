@@ -1,7 +1,8 @@
 const cors = require("cors");
 const express = require("express");
 const axios = require("axios");
-
+const path = require("path");
+const fs = require("fs");
 require("dotenv-flow").config();
 
 const { findEmojiByKeyword, loadEmojis } = require("../utils/findEmoji");
@@ -45,7 +46,26 @@ app.use(cors(corsOptions));
 
 // Clave API de TMDb
 const apiKey = process.env.TMBD_API_KEY;
-app.get("/", (req, res) => res.send("Express on Vercel"));
+
+// Middleware para servir archivos estáticos
+app.use("/public", express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.get("/openmoji", (req, res) => {
+  try {
+    const openMojiData = JSON.parse(
+      fs.readFileSync("public/data/OpenMoji.json").toString()
+    );
+    res.json(openMojiData);
+  } catch (error) {
+    console.error("Error al leer OpenMoji.json:", error);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+const emojis = loadEmojis();
 // Endpoint /find
 app.get("/find", async (req, res) => {
   const movieName = req.query.movie;
@@ -98,7 +118,7 @@ app.get("/find", async (req, res) => {
     const uniqueKeywords = [...new Set(keywords)];
 
     // emojis para cada palabra clave
-    const emojis = loadEmojis("public/OpenMoji.json");
+
     const emojisResult = uniqueKeywords.map((keyword) => {
       const closestEmoji = findEmojiByKeyword(keyword, emojis);
       return closestEmoji ? closestEmoji["_openMoji_hexcode"] : null;

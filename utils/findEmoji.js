@@ -1,8 +1,7 @@
-const jsonfile = require("jsonfile");
-
+const fs = require("fs");
 // Función para cargar los emojis desde el archivo JSON
-function loadEmojis(jsonFilename) {
-  return jsonfile.readFileSync(jsonFilename);
+function loadEmojis() {
+  return JSON.parse(fs.readFileSync("public/data/OpenMoji.json").toString());
 }
 
 // Función para encontrar el emoji que coincide mejor con la cadena de búsqueda

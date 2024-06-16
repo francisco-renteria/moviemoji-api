@@ -8,6 +8,7 @@
     "cors": "^2.8.5",
     "dotenv-flow": "^4.1.0",
     "express": "^4.19.2",
+    "fs": "^0.0.1-security",
     "jsonfile": "^6.1.0",
     "natural": "^7.0.6",
     "stopword": "^3.0.1"
