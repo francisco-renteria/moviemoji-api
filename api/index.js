@@ -4,9 +4,9 @@ const axios = require("axios");
 
 require("dotenv-flow").config();
 
-const { findEmojiByKeyword, loadEmojis } = require("./findEmoji");
+const { findEmojiByKeyword, loadEmojis } = require("../utils/findEmoji");
 
-const palabrasClave = require("./palabrasClave");
+const palabrasClave = require("../utils/palabrasClave");
 
 const app = express();
 
@@ -45,7 +45,7 @@ app.use(cors(corsOptions));
 
 // Clave API de TMDb
 const apiKey = process.env.TMBD_API_KEY;
-
+app.get("/", (req, res) => res.send("Express on Vercel"));
 // Endpoint /find
 app.get("/find", async (req, res) => {
   const movieName = req.query.movie;
