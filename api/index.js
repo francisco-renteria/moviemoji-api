@@ -47,24 +47,24 @@ app.use(cors(corsOptions));
 // Clave API de TMDb
 const apiKey = process.env.TMBD_API_KEY;
 
-// Middleware para servir archivos estáticos
-app.use("/public", express.static(path.join(__dirname, "public")));
+// // Middleware para servir archivos estáticos
+// app.use("/public", express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
 
-app.get("/openmoji", (req, res) => {
-  try {
-    const openMojiData = JSON.parse(
-      fs.readFileSync("public/data/OpenMoji.json").toString()
-    );
-    res.json(openMojiData);
-  } catch (error) {
-    console.error("Error al leer OpenMoji.json:", error);
-    res.status(500).send("Error interno del servidor");
-  }
-});
+// app.get("/openmoji", (req, res) => {
+//   try {
+//     const openMojiData = JSON.parse(
+//       fs.readFileSync("public/data/OpenMoji.json").toString()
+//     );
+//     res.json(openMojiData);
+//   } catch (error) {
+//     console.error("Error al leer OpenMoji.json:", error);
+//     res.status(500).send("Error interno del servidor");
+//   }
+// });
 const emojis = loadEmojis();
 // Endpoint /find
 app.get("/find", async (req, res) => {
