@@ -11,8 +11,17 @@ const palabrasClave = require("./palabrasClave");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const NODE_ENV = process.env.NODE_ENV || "development";
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+// Verificar que NODE_ENV y CORS_ORIGIN están definidas
+const NODE_ENV = process.env.NODE_ENV;
+const CORS_ORIGIN = process.env.CORS_ORIGIN;
+
+if (!NODE_ENV) {
+  throw new Error("NODE_ENV no está definido");
+}
+
+if (!CORS_ORIGIN) {
+  throw new Error("CORS_ORIGIN no está definido");
+}
 
 // Configurar CORS
 const corsOptions = {
@@ -21,16 +30,17 @@ const corsOptions = {
       callback(null, true); // Permitir cualquier origen en desarrollo
     } else {
       if (CORS_ORIGIN === "*" || !origin) {
-        callback(new Error("Not allowed by CORS"));
+        callback(null, true); // Permitir cualquier origen en producción si está configurado como "*"
       } else if (CORS_ORIGIN.split(",").includes(origin)) {
-        callback(null, true); // Permitir solo el dominio especificado en producción
+        callback(null, true); // Permitir solo los dominios especificados en producción
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error("Origen no permitido por CORS"));
       }
     }
   },
 };
 
+// Usar la configuración de CORS en la aplicación
 app.use(cors(corsOptions));
 
 // Clave API de TMDb
