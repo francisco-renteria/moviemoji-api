@@ -66,6 +66,21 @@ const apiKey = process.env.TMBD_API_KEY;
 //   }
 // });
 const emojis = loadEmojis();
+
+// Endpoint /
+app.get("/", (req, res) => {
+  const responseData = {
+    message: "¡Bienvenido a TMDB2EMOJI-API!",
+    time: new Date().toISOString(),
+    version: "1.0.0",
+    description:
+      "API para convertir películas a emojis 🎬👾🍿 . Utiliza algoritmos avanzados de NLP para analizar sinopsis y seleccionar emojis relevantes que representan visualmente las películas.",
+    "repository-api": "https://github.com/francisco-renteria/TMDB2EMOJI-API",
+    "repository-client": "https://github.com/francisco-renteria/TMDB2EMOJI",
+  };
+
+  res.json(responseData);
+});
 // Endpoint /find
 app.get("/find", async (req, res) => {
   const movieName = req.query.movie;
@@ -111,8 +126,11 @@ app.get("/find", async (req, res) => {
         },
       }
     );
-
+    console.log(movieResponse);
     const synopsisEN = movieResponse.data.overview || "Sinopsis no disponible";
+    const backdrop_path = movieResponse.data.backdrop_path;
+    const release_date = movieResponse.data.release_date;
+    const runtime = movieResponse.data.runtime;
     // sinopsis para extraer palabras clave
     const keywords = await palabrasClave(synopsisEN);
     const uniqueKeywords = [...new Set(keywords)];
@@ -133,6 +151,9 @@ app.get("/find", async (req, res) => {
       synopsisES: synopsisES,
       image: image,
       score: score,
+      backdrop_path: backdrop_path,
+      release_date: release_date,
+      runtime: runtime,
     });
   } catch (error) {
     console.error("Error al comunicarse con TMDb:", error);
